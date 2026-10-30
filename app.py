@@ -21,6 +21,7 @@ from ui.theme import get_theme_css
 from ui.components import (
     render_header,
     render_hero,
+    render_clean_html,
     render_profile_summary,
     render_language_recommendations,
     render_project_recommendations,
@@ -96,11 +97,10 @@ tab_studio, tab_projects, tab_rules, tab_methodology = st.tabs([
 with tab_studio:
     # A. Demo Scenarios Selector
     with st.expander("⚡ Load Demonstration Profiles (Academic Scenarios & Edge Cases)", expanded=False):
-        st.markdown(
+        render_clean_html(
             "<p class='rr-muted' style='font-size: 0.86rem; margin-bottom: 0.6rem;'>"
             "Pre-populated profiles from the original study. Click any profile to automatically load its parameters:"
-            "</p>",
-            unsafe_allow_html=True,
+            "</p>"
         )
         demo_cols = st.columns(len(DEMO_PROFILES))
         for idx, demo in enumerate(DEMO_PROFILES):
@@ -174,7 +174,7 @@ with tab_studio:
         # Keyword guidance card
         hint_data = DOMAIN_KEYWORD_HINTS.get(selected_domain, {})
         if hint_data:
-            st.markdown(
+            render_clean_html(
                 f"""
                 <div style="background-color: inherit; border: 1px dashed #64748b80; border-radius: 6px; padding: 0.6rem 0.9rem; margin-top: 0.2rem; margin-bottom: 0.6rem;">
                     <div style="font-size: 0.8rem; font-weight: 600; color: #0f766e;">Domain Keyword Influence ({selected_domain}):</div>
@@ -183,8 +183,7 @@ with tab_studio:
                         <em>Rule behavior:</em> {hint_data.get('rule_note', '')}
                     </div>
                 </div>
-                """,
-                unsafe_allow_html=True,
+                """
             )
 
         # Main Interest free-text input
@@ -242,7 +241,7 @@ with tab_studio:
     # C. Display Recommendation Results
     res = st.session_state.get("recommendation_result")
     if res is not None:
-        st.markdown("<hr style='margin: 1.5rem 0; border: none; border-top: 1px solid #e2e8f0;'>", unsafe_allow_html=True)
+        render_clean_html("<hr style='margin: 1.5rem 0; border: none; border-top: 1px solid #e2e8f0;'>")
 
         if res.get("status") == "Error":
             st.error(f"**Validation Rejected:** {res.get('message')}")
@@ -260,23 +259,21 @@ with tab_studio:
     history = st.session_state.get("history", [])
     if history:
         with st.expander(f"🕒 Recent Session Evaluations ({len(history)} items)", expanded=False):
-            st.markdown(
+            render_clean_html(
                 "<p class='rr-muted' style='font-size: 0.82rem; margin-bottom: 0.6rem;'>"
                 "Temporary in-memory history of recommendations evaluated during this browser session:"
-                "</p>",
-                unsafe_allow_html=True,
+                "</p>"
             )
             for idx, item in enumerate(reversed(history)):
                 hist_prof = item.get("profile", {})
                 cols = st.columns([0.7, 0.3])
                 with cols[0]:
-                    st.markdown(
+                    render_clean_html(
                         f"**{item['title']}** — `{item['timestamp']}`<br>"
                         f"<span style='font-size: 0.84rem; color: #64748b;'>"
                         f"Domain: {hist_prof.get('preferred_domain')} | Level: {hist_prof.get('experience_level')} | "
                         f"Diff: {hist_prof.get('preferred_difficulty')} | Interest: \"{hist_prof.get('main_interest')}\""
-                        f"</span>",
-                        unsafe_allow_html=True,
+                        f"</span>"
                     )
                 with cols[1]:
                     if st.button("Restore Result", key=f"restore_hist_{idx}", use_container_width=True):
@@ -309,7 +306,7 @@ with tab_methodology:
     st.markdown("<h3 style='font-size: 1.2rem; margin-bottom: 0.5rem;'>Academic Methodology & Viva Guide</h3>", unsafe_allow_html=True)
     render_educational_card()
 
-    st.markdown(
+    render_clean_html(
         """
         <div class="rr-card" style="margin-top: 1rem;">
             <h4 style="font-size: 1rem; margin-top: 0;">1. System Architecture Overview</h4>
@@ -338,7 +335,6 @@ with tab_methodology:
                 <em>Answer:</em> An active <code>DecisionTrace</code> accumulator records every rule evaluation as it executes in real time. The resulting trace is returned alongside the recommendation data and rendered directly in the interface.</p>
             </div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 

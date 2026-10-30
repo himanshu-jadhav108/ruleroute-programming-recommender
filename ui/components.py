@@ -105,11 +105,10 @@ def render_hero() -> None:
 def render_demo_profile_loader() -> Optional[Dict[str, Any]]:
     """Renders demo profiles selector for quick demonstration during viva or testing."""
     with st.expander("Load Demonstration Profiles (Viva & Academic Scenarios)", expanded=False):
-        st.markdown(
+        render_clean_html(
             "<p class='rr-muted' style='font-size: 0.86rem; margin-bottom: 0.6rem;'>"
             "Select an authentic profile from the original study to populate the input parameters:"
-            "</p>",
-            unsafe_allow_html=True,
+            "</p>"
         )
         cols = st.columns(len(DEMO_PROFILES))
         for idx, demo in enumerate(DEMO_PROFILES):
@@ -290,11 +289,10 @@ def render_decision_trace(trace: List[Dict[str, Any]]) -> None:
 def render_project_explorer() -> None:
     """Renders interactive browser for the complete 18-project catalog."""
     st.markdown("<h3 style='font-size: 1.2rem; margin-bottom: 0.4rem;'>Project Catalog Explorer</h3>", unsafe_allow_html=True)
-    st.markdown(
+    render_clean_html(
         "<p style='font-size: 0.88rem; color: #64748b; margin-bottom: 1rem;'>"
         "Browse all 18 canonical undergraduate project specifications curated across the 6 supported technical domains."
-        "</p>",
-        unsafe_allow_html=True,
+        "</p>"
     )
 
     col1, col2, col3 = st.columns(3)
@@ -317,13 +315,13 @@ def render_project_explorer() -> None:
             if kw in p['name'].lower() or kw in p['description'].lower() or kw in p['language'].lower() or kw in p['reason'].lower()
         ]
 
-    st.markdown(f"<div style='font-size: 0.85rem; color: #64748b; margin-bottom: 0.75rem;'>Showing {len(filtered)} of {len(PROJECT_CATALOG)} projects</div>", unsafe_allow_html=True)
+    render_clean_html(f"<div style='font-size: 0.85rem; color: #64748b; margin-bottom: 0.75rem;'>Showing {len(filtered)} of {len(PROJECT_CATALOG)} projects</div>")
 
     for p in filtered:
         diff = p['difficulty']
         badge_class = f"rr-badge-{diff.lower()}"
         with st.expander(f"{p['name']} ({p['domain']} • {p['difficulty']})"):
-            st.markdown(
+            render_clean_html(
                 f"""
                 <div style="margin-bottom: 0.5rem;">
                     <span class="rr-badge {badge_class}">{p['difficulty']}</span>
@@ -332,19 +330,17 @@ def render_project_explorer() -> None:
                 </div>
                 <p style="font-size: 0.9rem; margin-bottom: 0.4rem;"><strong>Description:</strong> {p['description']}</p>
                 <p style="font-size: 0.88rem; color: #0f766e; margin-bottom: 0;"><strong>Educational Value:</strong> {p['reason']}</p>
-                """,
-                unsafe_allow_html=True,
+                """
             )
 
 
 def render_rule_explorer() -> None:
     """Renders comprehensive breakdown of the engine's rule set for academic review."""
     st.markdown("<h3 style='font-size: 1.2rem; margin-bottom: 0.4rem;'>Inside the Recommendation Engine</h3>", unsafe_allow_html=True)
-    st.markdown(
+    render_clean_html(
         "<p style='font-size: 0.88rem; color: #64748b; margin-bottom: 1rem;'>"
         "Examine the 4 pipeline stages and deterministic propositional rules governing all recommendations."
-        "</p>",
-        unsafe_allow_html=True,
+        "</p>"
     )
 
     stages = [
@@ -365,7 +361,7 @@ def render_rule_explorer() -> None:
             """
         )
     stage_cards_html.append('</div>')
-    st.markdown("".join(stage_cards_html), unsafe_allow_html=True)
+    render_clean_html("".join(stage_cards_html))
 
     st.markdown("<h4 style='font-size: 1.05rem; margin-top: 1.5rem; margin-bottom: 0.6rem;'>Domain Rule Mappings</h4>", unsafe_allow_html=True)
 
@@ -409,14 +405,13 @@ def render_rule_explorer() -> None:
 
     for item in rule_details:
         with st.expander(f"Domain Rules: {item['domain']}"):
-            st.markdown(
+            render_clean_html(
                 f"""
                 <div style="font-size: 0.88rem; line-height: 1.5;">
                     <p><strong>Baseline Recommendation:</strong> {item['baseline']}</p>
                     <p style="margin-bottom: 0;"><strong>Conditional Expansion Rules:</strong><br>{item['conditional']}</p>
                 </div>
-                """,
-                unsafe_allow_html=True,
+                """
             )
 
 
