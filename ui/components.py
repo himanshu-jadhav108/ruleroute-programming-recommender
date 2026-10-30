@@ -20,7 +20,7 @@ from recommendation_engine.catalog import (
 
 def render_header() -> None:
     """Renders top navigation header with logo symbol, brand name, tagline, and theme toggle."""
-    col_brand, col_theme = st.columns([0.78, 0.22])
+    col_brand, col_theme = st.columns([0.72, 0.28])
 
     with col_brand:
         icon_path = "assets/ruleroute-icon.png"
@@ -30,7 +30,7 @@ def render_header() -> None:
             brand_mark_html = (
                 '<img src="app/static/ruleroute-icon.png" '
                 'alt="RuleRoute Symbol" '
-                'style="width: 38px; height: 38px; object-fit: contain; flex-shrink: 0; display: block;" />'
+                'class="rr-brand-icon" />'
             )
         else:
             brand_mark_html = (
@@ -40,14 +40,14 @@ def render_header() -> None:
 
         st.markdown(
             f"""
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-top: 0.1rem; margin-bottom: 0.7rem;">
+            <div class="rr-brand-group">
                 {brand_mark_html}
-                <div style="display: flex; flex-direction: column; justify-content: center;">
-                    <div style="display: flex; align-items: baseline; gap: 0.5rem; line-height: 1.25;">
-                        <span style="font-weight: 700; font-size: 1.45rem; letter-spacing: -0.02em;">RuleRoute</span>
-                        <span class="rr-tag" style="font-size: 0.72rem; vertical-align: middle;">Deterministic v1.0</span>
+                <div class="rr-brand-meta">
+                    <div class="rr-brand-title-row">
+                        <span class="rr-brand-name">RuleRoute</span>
+                        <span class="rr-tag rr-brand-tag" style="font-size: 0.72rem; vertical-align: middle;">Deterministic v1.0</span>
                     </div>
-                    <div style="font-size: 0.86rem; color: #64748b; margin-top: 0.15rem; line-height: 1.2;">
+                    <div class="rr-brand-tagline">
                         Find your language. Discover your next project.
                     </div>
                 </div>
@@ -321,24 +321,25 @@ def render_rule_explorer() -> None:
         unsafe_allow_html=True,
     )
 
-    stage_cols = st.columns(4)
     stages = [
         ("1. Validation", "Enforces schema constraints, domain validity, and non-empty interest strings."),
         ("2. Domain Routing", "Dispatches the profile to the domain-specific rule evaluation sub-tree."),
         ("3. Language Rules", "Evaluates level constraints and keyword triggers against language rationales."),
         ("4. Project Retrieval", "Queries catalog by (Domain, Difficulty) with domain-level fallback handling."),
     ]
-    for col, (title, desc) in zip(stage_cols, stages):
-        with col:
-            st.markdown(
-                f"""
-                <div class="rr-card" style="height: 100%; padding: 0.85rem 1rem;">
-                    <div style="font-size: 0.86rem; font-weight: 700; color: #0f766e; margin-bottom: 0.3rem;">{title}</div>
-                    <div style="font-size: 0.8rem; color: #64748b; line-height: 1.4;">{desc}</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+    
+    stage_cards_html = ['<div class="rr-stage-grid">']
+    for title, desc in stages:
+        stage_cards_html.append(
+            f"""
+            <div class="rr-card" style="margin-bottom: 0; padding: 0.85rem 1rem;">
+                <div style="font-size: 0.86rem; font-weight: 700; color: #0f766e; margin-bottom: 0.3rem;">{title}</div>
+                <div style="font-size: 0.8rem; color: #64748b; line-height: 1.4;">{desc}</div>
+            </div>
+            """
+        )
+    stage_cards_html.append('</div>')
+    st.markdown("".join(stage_cards_html), unsafe_allow_html=True)
 
     st.markdown("<h4 style='font-size: 1.05rem; margin-top: 1.5rem; margin-bottom: 0.6rem;'>Domain Rule Mappings</h4>", unsafe_allow_html=True)
 
