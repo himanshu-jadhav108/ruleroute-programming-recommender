@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/ruleroute-logo.png" alt="RuleRoute Logo" width="360" />
+</p>
+
 # RuleRoute — Programming Language & Project Recommendation System
 
 > **"Find your language. Discover your next project."**  

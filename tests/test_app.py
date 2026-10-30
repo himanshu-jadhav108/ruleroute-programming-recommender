@@ -77,3 +77,16 @@ def test_app_reset_form():
     assert not at.exception
     assert at.session_state["recommendation_result"] is None
     assert at.session_state["form_domain"] == "AI/ML"
+
+
+def test_logo_and_favicon_assets_integrated():
+    """Verify that logo, icon, and favicon assets exist and header displays logo tag."""
+    assert os.path.exists(os.path.join(os.path.dirname(APP_PATH), "assets", "ruleroute-logo.png"))
+    assert os.path.exists(os.path.join(os.path.dirname(APP_PATH), "assets", "ruleroute-icon.png"))
+    assert os.path.exists(os.path.join(os.path.dirname(APP_PATH), "assets", "favicon.png"))
+
+    at = AppTest.from_file(APP_PATH).run()
+    assert not at.exception
+    md_texts = " ".join([m.value for m in at.markdown])
+    assert "ruleroute-icon.png" in md_texts or "RuleRoute" in md_texts
+

@@ -4,6 +4,7 @@ Provides editorial-style developer components for forms, badges, project cards,
 language rationale cards, decision traces, and catalog explorers.
 """
 
+import os
 import json
 import streamlit as st
 from typing import List, Dict, Any, Optional
@@ -18,19 +19,38 @@ from recommendation_engine.catalog import (
 
 
 def render_header() -> None:
-    """Renders top navigation header with brand mark, tagline, and theme toggle."""
+    """Renders top navigation header with logo symbol, brand name, tagline, and theme toggle."""
     col_brand, col_theme = st.columns([0.78, 0.22])
 
     with col_brand:
+        icon_path = "assets/ruleroute-icon.png"
+        has_logo = os.path.exists(icon_path)
+
+        if has_logo:
+            brand_mark_html = (
+                '<img src="app/static/ruleroute-icon.png" '
+                'alt="RuleRoute Symbol" '
+                'style="width: 38px; height: 38px; object-fit: contain; flex-shrink: 0; display: block;" />'
+            )
+        else:
+            brand_mark_html = (
+                '<span style="font-family: monospace; font-weight: 700; font-size: 1.35rem; '
+                'color: #0f766e; letter-spacing: -0.02em;">[RR]</span>'
+            )
+
         st.markdown(
-            """
-            <div style="display: flex; align-items: baseline; gap: 0.6rem; margin-top: 0.2rem;">
-                <span style="font-family: monospace; font-weight: 700; font-size: 1.35rem; color: #0f766e; letter-spacing: -0.02em;">[RR]</span>
-                <span style="font-weight: 700; font-size: 1.45rem; letter-spacing: -0.02em;">RuleRoute</span>
-                <span class="rr-tag" style="font-size: 0.72rem; vertical-align: middle;">Deterministic v1.0</span>
-            </div>
-            <div style="font-size: 0.88rem; color: #64748b; margin-top: -0.1rem; margin-bottom: 0.8rem;">
-                Find your language. Discover your next project.
+            f"""
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-top: 0.1rem; margin-bottom: 0.7rem;">
+                {brand_mark_html}
+                <div style="display: flex; flex-direction: column; justify-content: center;">
+                    <div style="display: flex; align-items: baseline; gap: 0.5rem; line-height: 1.25;">
+                        <span style="font-weight: 700; font-size: 1.45rem; letter-spacing: -0.02em;">RuleRoute</span>
+                        <span class="rr-tag" style="font-size: 0.72rem; vertical-align: middle;">Deterministic v1.0</span>
+                    </div>
+                    <div style="font-size: 0.86rem; color: #64748b; margin-top: 0.15rem; line-height: 1.2;">
+                        Find your language. Discover your next project.
+                    </div>
+                </div>
             </div>
             """,
             unsafe_allow_html=True,

@@ -3,6 +3,7 @@ RuleRoute — Programming Language & Project Recommendation System
 Main Streamlit Application Entrypoint.
 """
 
+import os
 import streamlit as st
 import datetime
 from typing import Dict, Any
@@ -33,9 +34,11 @@ from ui.components import (
 # -----------------------------------------------------------------------------
 # 1. Page Configuration & State Initialization
 # -----------------------------------------------------------------------------
+FAVICON_PATH = "assets/favicon.png" if os.path.exists("assets/favicon.png") else "🧭"
+
 st.set_page_config(
     page_title="RuleRoute — Rule-Based Recommendation System",
-    page_icon="🧭",
+    page_icon=FAVICON_PATH,
     layout="centered",
     initial_sidebar_state="collapsed",
 )
