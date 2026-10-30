@@ -342,7 +342,7 @@ def get_theme_css(theme: str = "Light") -> str:
     }}
 
     /* -------------------------------------------------------------
-       6. Decision Trace Timeline
+       6. Decision Trace Timeline & Execution Diagram
        ------------------------------------------------------------- */
     .rr-trace-container {{
         background-color: {bg_surface};
@@ -354,16 +354,74 @@ def get_theme_css(theme: str = "Light") -> str:
         box-sizing: border-box;
     }}
 
+    /* Execution Flow Pipeline Diagram */
+    .rr-flow-diagram {{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        background-color: {bg_surface_alt};
+        border: 1px solid {border_color};
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1.1rem;
+        flex-wrap: wrap;
+    }}
+
+    .rr-flow-node {{
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: clamp(0.78rem, 1.8vw, 0.85rem);
+        font-weight: 600;
+        color: {text_primary};
+    }}
+
+    .rr-flow-badge {{
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background-color: {accent_subtle};
+        color: {accent};
+        border: 1.5px solid {accent};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.72rem;
+        font-weight: 700;
+        flex-shrink: 0;
+    }}
+
+    .rr-flow-arrow {{
+        color: {text_muted};
+        font-weight: 700;
+        font-size: 0.95rem;
+    }}
+
     .rr-trace-step {{
         display: flex;
         gap: clamp(0.65rem, 2.5vw, 1rem);
         padding: 0.85rem 0;
         border-bottom: 1px solid {border_color};
         align-items: flex-start;
+        position: relative;
     }}
 
     .rr-trace-step:last-child {{
         border-bottom: none;
+    }}
+
+    /* Connecting vertical diagram track between step nodes */
+    .rr-trace-step:not(:last-child)::before {{
+        content: "";
+        position: absolute;
+        top: 28px;
+        left: 12px;
+        bottom: 0px;
+        width: 2px;
+        background-color: {accent_subtle};
+        border-left: 2px dashed {accent}80;
+        z-index: 1;
     }}
 
     .rr-step-number {{
@@ -371,13 +429,18 @@ def get_theme_css(theme: str = "Light") -> str:
         width: 26px;
         height: 26px;
         border-radius: 50%;
-        background-color: {accent_subtle};
+        background-color: {bg_surface};
         color: {accent};
-        border: 1px solid {accent}80;
+        border: 2px solid {accent};
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 0.78rem;
+        font-weight: 700;
+        margin-top: 0.15rem;
+        position: relative;
+        z-index: 2;
+    }}
         font-weight: 700;
         margin-top: 0.15rem;
     }}

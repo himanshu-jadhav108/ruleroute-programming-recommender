@@ -61,3 +61,14 @@ def test_responsive_stage_grid_class():
     css = get_theme_css("Light")
     assert ".rr-stage-grid" in css
     assert "grid-template-columns: repeat(auto-fit, minmax(210px, 1fr))" in css
+
+
+def test_decision_trace_diagram_and_connector_track():
+    """Verify flow diagram and vertical connector track classes exist in CSS."""
+    css = get_theme_css("Light")
+    assert ".rr-flow-diagram" in css
+    assert ".rr-flow-node" in css
+    assert ".rr-flow-badge" in css
+    assert ".rr-trace-step:not(:last-child)::before" in css
+
+

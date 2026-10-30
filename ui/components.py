@@ -18,6 +18,16 @@ from recommendation_engine.catalog import (
 )
 
 
+def render_clean_html(html_str: str) -> None:
+    """
+    Renders HTML in Streamlit safely.
+    Strips leading whitespace from every line so CommonMark markdown parsers
+    never misinterpret indented HTML tags (>= 4 spaces) as indented <pre><code> blocks.
+    """
+    cleaned = "\n".join(line.lstrip() for line in html_str.splitlines() if line.strip())
+    st.markdown(cleaned, unsafe_allow_html=True)
+
+
 def render_header() -> None:
     """Renders top navigation header with logo symbol, brand name, tagline, and theme toggle."""
     col_brand, col_theme = st.columns([0.72, 0.28])
@@ -38,7 +48,7 @@ def render_header() -> None:
                 'color: #0f766e; letter-spacing: -0.02em;">[RR]</span>'
             )
 
-        st.markdown(
+        render_clean_html(
             f"""
             <div class="rr-brand-group">
                 {brand_mark_html}
@@ -52,8 +62,7 @@ def render_header() -> None:
                     </div>
                 </div>
             </div>
-            """,
-            unsafe_allow_html=True,
+            """
         )
 
     with col_theme:
@@ -72,7 +81,7 @@ def render_header() -> None:
 
 def render_hero() -> None:
     """Renders compact developer hero section."""
-    st.markdown(
+    render_clean_html(
         """
         <div class="rr-hero-banner">
             <h2 style="margin: 0 0 0.5rem 0; font-size: 1.35rem; font-weight: 600;">
@@ -82,15 +91,14 @@ def render_hero() -> None:
                 Tell us what you're interested in, where you are in your learning journey, and what you want to build.
                 RuleRoute finds recommendations using <strong>transparent, propositional decision rules</strong>—without probabilistic black boxes or external AI APIs.
             </p>
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.6rem;">
+            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.6rem;">
                 <span class="rr-accent-tag">6 Supported Domains</span>
                 <span class="rr-accent-tag">18 Verified Projects</span>
                 <span class="rr-accent-tag">Deterministic Trace</span>
                 <span class="rr-accent-tag">Zero Hallucinations</span>
             </div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 
@@ -118,7 +126,7 @@ def render_profile_summary(profile: Dict[str, Any]) -> None:
     diff = profile.get('preferred_difficulty', 'N/A')
     interest = profile.get('main_interest', 'N/A')
 
-    st.markdown(
+    render_clean_html(
         f"""
         <div class="rr-card" style="padding: 0.9rem 1.25rem; margin-bottom: 1.25rem;">
             <div style="font-size: 0.76rem; text-transform: uppercase; font-weight: 700; color: #64748b; margin-bottom: 0.4rem; letter-spacing: 0.04em;">
@@ -131,8 +139,7 @@ def render_profile_summary(profile: Dict[str, Any]) -> None:
                 <span class="rr-tag"><strong>Interest:</strong> {interest}</span>
             </div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 
@@ -141,7 +148,7 @@ def render_language_recommendations(languages: List[Dict[str, str]]) -> None:
     st.markdown("<h3 style='font-size: 1.18rem; margin-bottom: 0.6rem;'>Recommended Programming Languages</h3>", unsafe_allow_html=True)
 
     if not languages:
-        st.markdown(
+        render_clean_html(
             """
             <div class="rr-card" style="border-left: 4px solid #f59e0b;">
                 <div style="font-weight: 600; color: #d97706; margin-bottom: 0.25rem;">No Specific Language Rule Triggered</div>
@@ -150,14 +157,13 @@ def render_language_recommendations(languages: List[Dict[str, str]]) -> None:
                     Consider refining your interest text with domain-specific terms (e.g., 'frontend', 'backend', 'cross-platform', or 'engine').
                 </div>
             </div>
-            """,
-            unsafe_allow_html=True,
+            """
         )
         return
 
     for idx, lang in enumerate(languages, 1):
         rule_tag = lang.get('triggered_rule', 'Domain Rule Evaluation')
-        st.markdown(
+        render_clean_html(
             f"""
             <div class="rr-card" style="margin-bottom: 0.85rem;">
                 <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.35rem; flex-wrap: wrap;">
@@ -170,8 +176,7 @@ def render_language_recommendations(languages: List[Dict[str, str]]) -> None:
                     <strong>Rationale:</strong> {lang['rationale']}
                 </div>
             </div>
-            """,
-            unsafe_allow_html=True,
+            """
         )
 
 
@@ -180,14 +185,13 @@ def render_project_recommendations(projects: List[Dict[str, str]]) -> None:
     st.markdown("<h3 style='font-size: 1.18rem; margin-top: 1.25rem; margin-bottom: 0.6rem;'>Recommended Project Ideas</h3>", unsafe_allow_html=True)
 
     if not projects:
-        st.markdown(
+        render_clean_html(
             """
             <div class="rr-card">
                 <div style="font-weight: 600;">No Matching Projects Found</div>
                 <div style="font-size: 0.88rem; color: #64748b;">No projects matched the selected domain criteria.</div>
             </div>
-            """,
-            unsafe_allow_html=True,
+            """
         )
         return
 
@@ -195,7 +199,7 @@ def render_project_recommendations(projects: List[Dict[str, str]]) -> None:
         diff = proj['difficulty']
         badge_class = f"rr-badge-{diff.lower()}"
 
-        st.markdown(
+        render_clean_html(
             f"""
             <div class="rr-card" style="margin-bottom: 0.85rem;">
                 <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.4rem;">
@@ -214,22 +218,44 @@ def render_project_recommendations(projects: List[Dict[str, str]]) -> None:
                     <strong>Recommendation Reason:</strong> {proj['reason']}
                 </div>
             </div>
-            """,
-            unsafe_allow_html=True,
+            """
         )
 
 
 def render_decision_trace(trace: List[Dict[str, Any]]) -> None:
     """
     Renders the deterministic decision trace explaining step-by-step why the engine
-    arrived at the recommendations.
+    arrived at the recommendations with an executive pipeline diagram and step-by-step
+    audit timeline.
     """
     with st.expander("Why did RuleRoute recommend this? (Decision Trace)", expanded=True):
-        st.markdown(
-            "<p style='font-size: 0.86rem; color: #64748b; margin-bottom: 0.8rem;'>"
-            "Chronological execution log generated during profile evaluation. Every step reflects an actual propositional rule condition evaluated by the engine:"
-            "</p>",
-            unsafe_allow_html=True,
+        render_clean_html(
+            """
+            <p style='font-size: 0.86rem; color: #64748b; margin-bottom: 0.8rem;'>
+                Chronological execution log generated during profile evaluation. Every step reflects an actual propositional rule condition evaluated by the engine:
+            </p>
+            <div class="rr-flow-diagram">
+                <div class="rr-flow-node">
+                    <span class="rr-flow-badge">1</span>
+                    <span>Validation</span>
+                </div>
+                <span class="rr-flow-arrow">➔</span>
+                <div class="rr-flow-node">
+                    <span class="rr-flow-badge">2</span>
+                    <span>Domain Routing</span>
+                </div>
+                <span class="rr-flow-arrow">➔</span>
+                <div class="rr-flow-node">
+                    <span class="rr-flow-badge">3</span>
+                    <span>Language Logic</span>
+                </div>
+                <span class="rr-flow-arrow">➔</span>
+                <div class="rr-flow-node">
+                    <span class="rr-flow-badge">4</span>
+                    <span>Project Retrieval</span>
+                </div>
+            </div>
+            """
         )
 
         trace_html = ['<div class="rr-trace-container">']
@@ -258,7 +284,7 @@ def render_decision_trace(trace: List[Dict[str, Any]]) -> None:
                 """
             )
         trace_html.append('</div>')
-        st.markdown("".join(trace_html), unsafe_allow_html=True)
+        render_clean_html("".join(trace_html))
 
 
 def render_project_explorer() -> None:
@@ -396,7 +422,7 @@ def render_rule_explorer() -> None:
 
 def render_educational_card() -> None:
     """Renders academic explainer on rule-based recommendation systems."""
-    st.markdown(
+    render_clean_html(
         """
         <div class="rr-card" style="margin-top: 1.5rem; background-color: inherit; border-left: 3px solid #0f766e;">
             <div style="font-size: 0.94rem; font-weight: 700; color: #0f766e; margin-bottom: 0.35rem;">
@@ -410,8 +436,7 @@ def render_educational_card() -> None:
                 Every recommended language and project is directly traceable to the user's explicit profile parameters.
             </div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 
