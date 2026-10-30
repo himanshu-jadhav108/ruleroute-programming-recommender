@@ -80,9 +80,10 @@ def test_app_reset_form():
 
 
 def test_logo_and_favicon_assets_integrated():
-    """Verify that logo, icon, and favicon assets exist and header displays logo tag."""
+    """Verify that logo, icon, badge, and favicon assets exist and header displays logo tag."""
     assert os.path.exists(os.path.join(os.path.dirname(APP_PATH), "assets", "ruleroute-logo.png"))
     assert os.path.exists(os.path.join(os.path.dirname(APP_PATH), "assets", "ruleroute-icon.png"))
+    assert os.path.exists(os.path.join(os.path.dirname(APP_PATH), "assets", "ruleroute-badge.jpg"))
     assert os.path.exists(os.path.join(os.path.dirname(APP_PATH), "assets", "favicon.png"))
 
     at = AppTest.from_file(APP_PATH).run()

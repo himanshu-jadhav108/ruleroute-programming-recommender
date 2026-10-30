@@ -28,6 +28,82 @@ def render_clean_html(html_str: str) -> None:
     st.markdown(cleaned, unsafe_allow_html=True)
 
 
+def render_seo_metadata() -> None:
+    """Injects comprehensive SEO meta tags, Open Graph (OG), and Twitter Card preview tags.
+    Ensures rich link previews with logo/badge when sharing on WhatsApp, LinkedIn, Twitter, Discord, etc.
+    """
+    badge_url = "https://raw.githubusercontent.com/himanshu-jadhav108/ruleroute-programming-recommender/main/assets/ruleroute-badge.jpg"
+    app_url = "https://ruleroute-programming-recommender.streamlit.app/"
+    title = "RuleRoute — Programming Language & Project Recommendation System"
+    desc = "Find your language. Discover your next project. Transparent, deterministic rule-based recommendation platform for students and developers."
+    keywords = "RuleRoute, rule-based recommendation system, programming language recommender, undergraduate projects, computer science, deterministic expert system, decision trace"
+
+    seo_html = f"""
+    <!-- Open Graph / SEO Meta Tags -->
+    <meta name="description" content="{desc}">
+    <meta name="keywords" content="{keywords}">
+    <meta name="author" content="RuleRoute">
+
+    <!-- Open Graph (Facebook, WhatsApp, LinkedIn, Discord) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="RuleRoute">
+    <meta property="og:url" content="{app_url}">
+    <meta property="og:title" content="{title}">
+    <meta property="og:description" content="{desc}">
+    <meta property="og:image" content="{badge_url}">
+    <meta property="og:image:secure_url" content="{badge_url}">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="1024">
+    <meta property="og:image:alt" content="RuleRoute Logo Badge">
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@RuleRoute">
+    <meta name="twitter:url" content="{app_url}">
+    <meta name="twitter:title" content="{title}">
+    <meta name="twitter:description" content="{desc}">
+    <meta name="twitter:image" content="{badge_url}">
+    <meta name="twitter:image:alt" content="RuleRoute Logo Badge">
+
+    <script>
+    (function() {{
+        try {{
+            const targetDoc = window.parent ? window.parent.document : document;
+            const metaConfigs = [
+                {{ prop: 'og:title', content: "{title}" }},
+                {{ prop: 'og:description', content: "{desc}" }},
+                {{ prop: 'og:image', content: "{badge_url}" }},
+                {{ prop: 'og:url', content: "{app_url}" }},
+                {{ prop: 'og:type', content: "website" }},
+                {{ prop: 'og:site_name', content: "RuleRoute" }},
+                {{ name: 'twitter:card', content: "summary_large_image" }},
+                {{ name: 'twitter:title', content: "{title}" }},
+                {{ name: 'twitter:description', content: "{desc}" }},
+                {{ name: 'twitter:image', content: "{badge_url}" }},
+                {{ name: 'description', content: "{desc}" }},
+                {{ name: 'keywords', content: "{keywords}" }}
+            ];
+            metaConfigs.forEach(function(item) {{
+                const selector = item.prop ? `meta[property="${{item.prop}}"]` : `meta[name="${{item.name}}"]`;
+                let el = targetDoc.querySelector(selector);
+                if (!el) {{
+                    el = targetDoc.createElement('meta');
+                    if (item.prop) el.setAttribute('property', item.prop);
+                    if (item.name) el.setAttribute('name', item.name);
+                    targetDoc.head.appendChild(el);
+                }}
+                el.setAttribute('content', item.content);
+            }});
+        }} catch(e) {{
+            // Ignore sandbox restrictions if applicable
+        }}
+    }})();
+    </script>
+    """
+    render_clean_html(seo_html)
+
+
 def render_header() -> None:
     """Renders top navigation header with logo symbol, brand name, tagline, and theme toggle."""
     col_brand, col_theme = st.columns([0.72, 0.28])

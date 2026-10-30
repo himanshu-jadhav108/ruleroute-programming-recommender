@@ -22,6 +22,7 @@ from ui.components import (
     render_header,
     render_hero,
     render_clean_html,
+    render_seo_metadata,
     render_profile_summary,
     render_language_recommendations,
     render_project_recommendations,
@@ -35,7 +36,11 @@ from ui.components import (
 # -----------------------------------------------------------------------------
 # 1. Page Configuration & State Initialization
 # -----------------------------------------------------------------------------
-FAVICON_PATH = "assets/favicon.png" if os.path.exists("assets/favicon.png") else "🧭"
+FAVICON_PATH = (
+    "assets/ruleroute-badge.jpg"
+    if os.path.exists("assets/ruleroute-badge.jpg")
+    else ("assets/favicon.png" if os.path.exists("assets/favicon.png") else "🧭")
+)
 
 st.set_page_config(
     page_title="RuleRoute — Rule-Based Recommendation System",
@@ -43,6 +48,9 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="collapsed",
 )
+
+# Inject SEO & Open Graph Social Sharing Metadata
+render_seo_metadata()
 
 if "theme" not in st.session_state:
     st.session_state["theme"] = "Light"
